@@ -1,4 +1,7 @@
 ### Twine with Three JS scene Template
+
+![Pic of template](https://github.com/drnoir/3d-loader-twine/blob/main/pic.jpg?raw=true)
+
 This is a template for twine that can be used as a starting point for loading a GLB model into Twine with a script embedded on any passage that you wish to load in a GLB model. 
 
 This works for <a href = "https://videlais.github.io/snowman/#/">Snowman format</a> version 2.02. Not tested for other formats.

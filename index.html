@@ -3,7 +3,7 @@
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="utf-8">
-		<title>Twine with Three JS scene Template</title>
+		<title>Chapbook: Importing External JS</title>
 		<style>
 		/*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-webkit-text-size-adjust:100%}details,main,tw-passage{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}code,kbd,pre,samp{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;color:#222;text-decoration-color:#ccc}abbr[title]{border-bottom:none;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:bolder}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button}[type=button]::-moz-focus-inner,[type=reset]::-moz-focus-inner,[type=submit]::-moz-focus-inner,button::-moz-focus-inner{border-style:none;padding:0}[type=button]:-moz-focusring,[type=reset]:-moz-focusring,[type=submit]:-moz-focusring,button:-moz-focusring{outline:ButtonText dotted 1px}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type=checkbox],[type=radio]{box-sizing:border-box;padding:0}[type=number]::-webkit-inner-spin-button,[type=number]::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}[type=search]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}[hidden],template,tw-storydata{display:none}body{font:1.5em "Helvetica Neue",Helvetica,Arial,sans-serif;color:#222;margin:.5em}tw-story{max-width:35em;margin:0 auto;line-height:150%;display:block}a:hover{color:#cc8929;text-decoration-color:#cc8929}a:active{color:#ffb040;text-decoration-color:#cc8929}@media screen and (max-width:480px){#passage{font-size:70%}}
 		</style>
@@ -24,6 +24,7 @@ a{
 h1,h2,h3,h4,h5,h6{
  font-family: "Silkscreen", serif;
 }
+
 #three-container {
     width: 100%;
     height: 50vh; /* Full height of the viewport */
@@ -54,27 +55,9 @@ tw-story {
 .floatRight{
   float:right;
   margin:1em;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">function loadScript(url, callback) {
-    let script = document.createElement("script");
-    script.src = url;
-    script.onload = callback;
-    document.head.appendChild(script);
-}
-
-
-loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", function () {
-    console.log("Three.js loaded");
-
-    loadScript("https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js", function () {
-        console.log("GLTFLoader loaded");
-    });
-
-    loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/examples/js/controls/OrbitControls.js", function () {
-        console.log("orbit controls Loader loaded");
-    });
-
-
-});</script><tw-passagedata pid="1" name="Start" tags="" position="325,75" size="100,100">&lt;img src = &quot;logo.jpg&quot; class = &quot;floatRight smallImage&quot; /&gt;
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">var script = document.createElement('script');
+script.src = './main.js'; // Try using an absolute path if needed
+document.head.appendChild(script);</script><tw-passagedata pid="1" name="Start" tags="" position="650,50" size="100,100">&lt;img src = &quot;logo.jpg&quot; class = &quot;floatRight smallImage&quot; /&gt;
 &lt;h2&gt;Twine with Three JS scene Template&lt;/h2&gt;
 This is a template for twine that can be used as a starting point for loading a GLB model into Twine with a script embedded on any passage that you wish to load in a GLB model. 
 
@@ -100,206 +83,96 @@ You can load in 3d.html to view all the custom code, stylesheets and javascript
 &lt;h2&gt;Examples&lt;/h2&gt;
 
 - [[Load In and Rotate]] 
-- [[Modifying colours]]
+- [[Modifying ambient light colours]]
 - [[Static]] 
-</tw-passagedata><tw-passagedata pid="2" name="Load In and Rotate" tags="" position="450,300" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
-
-&lt;h2&gt;Rotating Example&lt;/h2&gt;
-
-This scene loads in a glb model and rotates it around 
-
-[[Start]]
+- [[Default load with animation]]
 
 &lt;script&gt;
-(function() {
-    // Check if Three.js is already loaded
-    if (typeof THREE === &quot;undefined&quot;) {
-        console.error(&quot;Three.js is not loaded.&quot;);
-        return;
-    }
-
-    // Remove any existing WebGL content to prevent duplication
-    let existingCanvas = document.querySelector(&quot;#three-container canvas&quot;);
-    if (existingCanvas) {
-        existingCanvas.remove();
-    }
-
-    // Create Scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 45, 500 / 200, 1, 1500 );
-    const renderer = new THREE.WebGLRenderer({ alpha: false });
-    renderer.setSize(500,200);
-    document.getElementById(&quot;three-container&quot;).appendChild(renderer.domElement);
-
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
-    scene.background = new THREE.Color(&#39;black&#39;);
-
-  
-    // Load GLTF/GLB Model
-    const loader = new THREE.GLTFLoader();
-    loader.load(&quot;robot.glb&quot;, function (gltf) {
-        let model = gltf.scene;
-        scene.add(model);
-        model.position.set(0, 0, -800);
-        model.scale.set(1, 1, 1);
-        model.rotation.y = Math.PI; // Face camera
-
-window.addEventListener(&quot;resize&quot;, () =&gt; {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-        // Animate rotation
-        function animate() {
-            requestAnimationFrame(animate);
-            model.rotation.y += 0.01; // Slow rotation
- 
-            renderer.render(scene, camera);
+  window.onload = async function () {
+        try {
+            const modules = await window.loadThree();
+            console.log(&quot;Three.js is ready:&quot;, modules);
+        } catch (error) {
+            console.error(&quot;Failed to load Three.js:&quot;, error);
         }
-        animate();
-    });
-
-    camera.position.set(0, 2, 5);
-})();
+    };
 &lt;/script&gt;
-</tw-passagedata><tw-passagedata pid="3" name="Modifying colours" tags="" position="900,75" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
-&lt;h2&gt;modified colours&lt;/h2&gt;
+&lt;/script&gt;
+</tw-passagedata><tw-passagedata pid="2" name="Load In and Rotate" tags="" position="400,325" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
-This is a scene with modified colours for lighting etc 
+### Rotating Example
+
+This scene loads in a glb model and rotates it around  by setting the final argument 
+speed sent to the loadThreesWithModel Function
+
+
+### Set position and load a static model
+Pass in the GLB filename. Set the ambient light and then position x, y and z. 
+Add rotation speed to make it move at the set speed.
+
+ window.loadThreeJSWithModel(&#39;robot.glb&#39;,&#39;white&#39;, 0.5, 0,0,-125, 0.02);
+ 
+ [[Start]]
+ 
+&lt;script&gt;
+
+ window.loadThreeJSWithModel(&#39;robot.glb&#39;,&#39;white&#39;, 0.5, 0,0,-125, 0.02);
+    
+&lt;/script&gt;</tw-passagedata><tw-passagedata pid="3" name="Modifying ambient light colours" tags="" position="1000,125" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
+
+##modified colours
+
+This is a scene with modified colours for lighting passed in as second arguement to the loadThreeJSWithModel Function
+
+### How to set the ambient light color
+This is how this is set. Color is set as the 2nd arguement and sets the ambient lighting on the model. 
+
+ window.loadThreeJSWithModel(&#39;hero.glb&#39;, &#39;red&#39;,  6, 0,-4,-4);
 
 [[Start]]
 
 &lt;script&gt;
-(function() {
-    // Check if Three.js is already loaded
-    if (typeof THREE === &quot;undefined&quot;) {
-        console.error(&quot;Three.js is not loaded.&quot;);
-        return;
-    }
+ window.loadThreeJSWithModel(&#39;hero.glb&#39;, &#39;red&#39;,  6, 0,-4,-4);
+&lt;/script&gt;</tw-passagedata><tw-passagedata pid="4" name="Static" tags="" position="550,325" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
-    // Remove any existing WebGL content to prevent duplication
-    let existingCanvas = document.querySelector(&quot;#three-container canvas&quot;);
-    if (existingCanvas) {
-        existingCanvas.remove();
-    }
-
-    // Create Scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 45, 500 / 200, 1, 1500 );
-    const renderer = new THREE.WebGLRenderer({ alpha: false });
-    renderer.setSize(500,200);
-    document.getElementById(&quot;three-container&quot;).appendChild(renderer.domElement);
-
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(&#39;green&#39;, 1);
-    scene.add(ambientLight);
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
-    scene.background = new THREE.Color(&#39;blue&#39;);
-
-  
-    // Load GLTF/GLB Model
-    const loader = new THREE.GLTFLoader();
-    loader.load(&quot;robot.glb&quot;, function (gltf) {
-        let model = gltf.scene;
-        scene.add(model);
-        model.position.set(0, 0, -1000);
-        model.scale.set(1, 1, 1);
-        model.rotation.y = Math.PI; // Face camera
-
-window.addEventListener(&quot;resize&quot;, () =&gt; {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-        // Animate rotation
-        function animate() {
-            requestAnimationFrame(animate);
-            model.rotation.y += 0.012; // Slow rotation
- 
-            renderer.render(scene, camera);
-        }
-        animate();
-    });
-
-    camera.position.set(0, 2, 5);
-})();
-&lt;/script&gt;</tw-passagedata><tw-passagedata pid="4" name="Static" tags="" position="1100,425" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
-
-&lt;h2&gt;Static Scene&lt;/h2&gt;
+## Static Scene
 
 A static scene with no animation
 
+
+
+### Set position and load a static model
+Pass in the GLB filename. Set the ambient light and then position x, y and z. 
+Do not add a rotation speed to make it static.
+
+ window.loadThreeJSWithModel(&#39;tower.glb&#39;,&#39;white&#39;, 1, 0,0 -250);
+
 [[Start]]
 
 &lt;script&gt;
-(function() {
-    // Check if Three.js is already loaded
-    if (typeof THREE === &quot;undefined&quot;) {
-        console.error(&quot;Three.js is not loaded.&quot;);
-        return;
-    }
+ window.loadThreeJSWithModel(&#39;tower.glb&#39;,&#39;white&#39;, 1, 0,0 -250);
+&lt;/script&gt;</tw-passagedata><tw-passagedata pid="5" name="Default load with animation" tags="" position="775,325" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
-    // Remove any existing WebGL content to prevent duplication
-    let existingCanvas = document.querySelector(&quot;#three-container canvas&quot;);
-    if (existingCanvas) {
-        existingCanvas.remove();
-    }
+## Trigger an Animation
 
-    // Create Scene
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 45, 500 / 200, 1, 1500 );
-    const renderer = new THREE.WebGLRenderer({ alpha: false });
-    renderer.setSize(500,200);
-    document.getElementById(&quot;three-container&quot;).appendChild(renderer.domElement);
+Passing model info with animation triggering automatically and some custom pos
+and scaling
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
-    scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
-    scene.background = new THREE.Color(&#39;black&#39;);
+### How to load the model 
+Pass in the GLB filename. Set the ambient light and then position x, y and z. 
+Optionally add a rotation speed to add a rotation.
+All animations by default will load from the model and loop automatically
 
-  
-    // Load GLTF/GLB Model
-    const loader = new THREE.GLTFLoader();
-    loader.load(&quot;robot.glb&quot;, function (gltf) {
-        let model = gltf.scene;
-        scene.add(model);
-        model.position.set(0, 0,-450);
-        model.scale.set(1, 1, 1);
-        model.rotation.y = -120 // Face camera
-
-window.addEventListener(&quot;resize&quot;, () =&gt; {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-        // Animate rotation
-        function animate() {
-            requestAnimationFrame(animate);
-            
-           // animation 
-            //model.rotation.y += 0.01; // Slow rotation
+ window.loadThreeJSWithModel(&#39;hero.glb&#39;, &#39;white&#39;,  6, 0,-6,-4);
  
-            renderer.render(scene, camera);
-        }
-        animate();
-    });
+[[Start]]
 
-    camera.position.set(0, 2, 5);
-})();
+&lt;script&gt;
+
+ window.loadThreeJSWithModel(&#39;hero.glb&#39;, &#39;white&#39;,  6, 0,-6,-4);
+    
 &lt;/script&gt;</tw-passagedata></tw-storydata>
 		<script>
 		(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){

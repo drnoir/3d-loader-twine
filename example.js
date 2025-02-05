@@ -21,7 +21,7 @@ loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", 
 });
 
 
-(function() {
+(function () {
     // Check if Three.js is already loaded
     if (typeof THREE === "undefined") {
         console.error("Three.js is not loaded.");
@@ -36,9 +36,9 @@ loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", 
 
     // Create Scene
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 45, 500 / 200, 1, 1500 );
+    const camera = new THREE.PerspectiveCamera(45, 500 / 200, 1, 1500);
     const renderer = new THREE.WebGLRenderer({ alpha: false });
-    renderer.setSize(500,200);
+    renderer.setSize(500, 200);
     document.getElementById("three-container").appendChild(renderer.domElement);
 
     // Lighting
@@ -50,9 +50,14 @@ loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", 
     scene.add(directionalLight);
     scene.background = new THREE.Color('black');
 
-  
+
     // Load GLTF/GLB Model
     const loader = new THREE.GLTFLoader();
+    loader.setCrossOrigin("anonymous");
+    loader.setWithCredentials(true); // Ensures credentials are sent for external texture URLs
+
+    const clock = new THREE.Clock();
+    let mixer;
     loader.load("robot.glb", function (gltf) {
         let model = gltf.scene;
         scene.add(model);
@@ -60,20 +65,25 @@ loadScript("https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js", 
         model.scale.set(1, 1, 1);
         model.rotation.y = Math.PI; // Face camera
 
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
-        // Animate rotation
-        function animate() {
-            requestAnimationFrame(animate);
-            model.rotation.y += 0.01; // Slow rotation
- 
-            renderer.render(scene, camera);
-        }
-        animate();
+        // Initialize animation mixer
+        mixer = new THREE.AnimationMixer(model);
+
+        // Play all animations
+        gltf.animations.forEach((clip) => {
+            const action = mixer.clipAction(clip);
+            action.play();
+        })
+    }, undefined, (error) => {
+        console.error('Error loading model:', error);
     });
 
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        if (mixer) mixer.update(clock.getDelta());
+        renderer.render(scene, camera);
+    }
+
+    animate();
     camera.position.set(0, 2, 5);
 })();

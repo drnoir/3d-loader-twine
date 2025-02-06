@@ -21,10 +21,12 @@ such as
 
 You cannot test in the editor.
 
-You can load in 3d.html to view all the custom code, stylesheets and javascript
+You can load in index.html to view the twine project.
+Main.js is where all the javascript for loading in 3D models and the libraries are if you want to modify that. 
 
-#### Examples
+### Examples
 
-- [[Load In and Rotate]] 
-- [[Modifying colours]]
-- [[Static]] 
+- Load In and Rotate
+- Modifying ambient light colours
+- Static
+- Default load with animation

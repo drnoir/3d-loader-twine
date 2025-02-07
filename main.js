@@ -32,7 +32,7 @@ window.loadThree = (function () {
     };
 })();
 
-window.loadThreeJSWithModel = async function (modelPath, light, scale, posx, posy, posz, speed) {
+window.loadThreeJSWithModel = async function (modelPath,backgroundTex, light, scale, posx, posy, posz, speed, custumAnim) {
     // Remove any existing WebGL content to prevent duplication
     let existingCanvas = document.querySelector("#three-container canvas");
     if (existingCanvas) {
@@ -51,6 +51,15 @@ window.loadThreeJSWithModel = async function (modelPath, light, scale, posx, pos
     // Initialize Three.js scene
     const scene = new THREE.Scene();
     
+    const texLoader = new THREE.TextureLoader();
+    // Load background image
+    if (backgroundTex){
+    texLoader.load(backgroundTex, function(texture) {
+    scene.background = texture;  // Set as background
+    });
+    }
+
+
     // Lighting
     const ambientLight = new THREE.AmbientLight(light, 1);
     scene.add(ambientLight);
@@ -69,6 +78,7 @@ window.loadThreeJSWithModel = async function (modelPath, light, scale, posx, pos
     // Load the GLB model
     const clock = new THREE.Clock();
     let mixer = null; // Mixer for animations
+    let animNum = null; // if custom anim 
 
     const loader = new GLTFLoader();
     loader.load(
@@ -77,31 +87,36 @@ window.loadThreeJSWithModel = async function (modelPath, light, scale, posx, pos
             scene.add(gltf.scene);
 
             // custom pos ?
-            if (posx, posy, posz){
-            gltf.scene.position.set(posx, posy, posz);
-            }else{
+            if (posx, posy, posz) {
+                gltf.scene.position.set(posx, posy, posz);
+            } else {
                 gltf.scene.position.set(0, 0, 0);
             }
 
             // custom scaling ?
-            if (scale){
-            gltf.scene.scale.set(scale, scale*2, scale);
+            if (scale) {
+                gltf.scene.scale.set(scale, scale, scale);
             }
-            else{
+            else {
                 gltf.scene.scale.set(1, 1, 1);
             }
 
 
             console.log("Model loaded:", modelPath, gltf.animations);
-
             // Ensure animations exist
             if (gltf.animations.length > 0) {
                 mixer = new THREE.AnimationMixer(gltf.scene);
-                gltf.animations.forEach((clip) => {
-                    console.log("Playing animation:", clip.name);
-                    const action = mixer.clipAction(clip);
-                    action.play();
-                });
+                if (custumAnim>=0 &&custumAnim!=null) {
+                    console.log(gltf.animations[custumAnim].name);
+                    animNum = gltf.animations[custumAnim];
+                    const actionCustom = mixer.clipAction(animNum);
+                    actionCustom.play()
+                } else
+                    gltf.animations.forEach((clip) => {
+                        console.log("Playing animation:", clip.name);
+                        const action = mixer.clipAction(clip);
+                        action.play();
+                    });
             } else {
                 console.warn("No animations found in model:", modelPath);
             }
@@ -115,7 +130,7 @@ window.loadThreeJSWithModel = async function (modelPath, light, scale, posx, pos
     // Animation loop
     function animate() {
         requestAnimationFrame(animate);
-        if (speed){scene.rotation.y += speed}; // Slow rotation)
+        if (speed) { scene.rotation.y += speed }; // Slow rotation)
         if (mixer) mixer.update(clock.getDelta()); // Update mixer if it exists
         renderer.render(scene, camera);
     }

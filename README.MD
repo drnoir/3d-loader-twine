@@ -2,6 +2,8 @@
 ## 3D Loader Twine
 ####  by Chris Godber
 
+![alt text](https://github.com/drnoir/3d-loader-twine/blob/main/twineloader3d4.jpg)
+
 Live Demo Link - <a href = "https://drnoir.github.io/3d-loader-twine/Example%20Game%20-%20The%20Pointless%20Garage%20Quest/">Play the demo game here</a>
 
 This is a template for twine that can be used as a starting point for loading a GLB model into Twine with a script embedded on any passage that you wish to load in a GLB model. 

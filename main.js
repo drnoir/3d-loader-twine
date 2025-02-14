@@ -33,6 +33,8 @@ window.loadThree = (function () {
 })();
 
 window.loadThreeJSWithModel = async function (modelPath,backgroundTex, light, scale, posx, posy, posz, speed, custumAnim) {
+    let model = modelPath;
+    
     // Remove any existing WebGL content to prevent duplication
     let existingCanvas = document.querySelector("#three-container canvas");
     if (existingCanvas) {
@@ -82,7 +84,7 @@ window.loadThreeJSWithModel = async function (modelPath,backgroundTex, light, sc
 
     const loader = new GLTFLoader();
     loader.load(
-        modelPath,
+        model,
         (gltf) => {
             scene.add(gltf.scene);
 
@@ -102,7 +104,7 @@ window.loadThreeJSWithModel = async function (modelPath,backgroundTex, light, sc
             }
 
 
-            console.log("Model loaded:", modelPath, gltf.animations);
+            console.log("Model loaded:", model, gltf.animations);
             // Ensure animations exist
             if (gltf.animations.length > 0) {
                 mixer = new THREE.AnimationMixer(gltf.scene);
@@ -118,7 +120,7 @@ window.loadThreeJSWithModel = async function (modelPath,backgroundTex, light, sc
                         action.play();
                     });
             } else {
-                console.warn("No animations found in model:", modelPath);
+                console.warn("No animations found in model:", model);
             }
         },
         undefined,

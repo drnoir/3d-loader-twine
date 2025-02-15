@@ -82,6 +82,7 @@ You can use this as a template for your own projects.
 - You will need to know some basics of how to edit three js scripts to get the most out of this template. Examples are provided and an example game is included to show you a typical implemention.
 - You can set a background image on each passage
 - You can also trigger a custom animation from the models animation list by passing its id starting from 0. Console logs are provided so you can inspect this in main.js
+- Load in a model and create a path for the camera to move to on intitlisation 
 
 ### Testing Locally
 You have to export your twine project and then run your html file on a local server due to CORS blocking asset loading
@@ -176,7 +177,7 @@ Do not add a rotation speed to make it static.
 
 &lt;script&gt;
  window.loadThreeJSWithModel(&#39;./models/tower.glb&#39;, &#39;sky.jpg&#39;, &#39;white&#39;, 0.8, 0,0 -250);
-&lt;/script&gt;</tw-passagedata><tw-passagedata pid="5" name="Default load with animation" tags="" position="950,375" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
+&lt;/script&gt;</tw-passagedata><tw-passagedata pid="5" name="Default load with animation" tags="" position="925,325" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
 ## Trigger an Animation
 
@@ -231,13 +232,13 @@ Pass in the GLB filename. Set the background texture, set the end point vectors 
 window.modelWithPath(&#39;./models/city.glb&#39;, &#39;sky.jpg&#39;, 0, 60, 120, 10000);
  
   ### Passable Settings:
- modelPath,backgroundTex, camPath, duration, loop
+ modelPath,backgroundTex, camPath, duration
 
 [[Start]]
 
 &lt;script&gt;
 
-window.modelWithPath(&#39;./models/city.glb&#39;, &#39;sky.jpg&#39;, 0, 60, 120, 10000);
+window.modelWithPath(&#39;./models/city.glb&#39;, &#39;sky.jpg&#39;, 0, 60, 150, 13000);
 
 &lt;/script&gt;</tw-passagedata></tw-storydata>
 		<script>

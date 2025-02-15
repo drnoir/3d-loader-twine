@@ -51,3 +51,69 @@ window.loadThreeJSWithModel('hero.glb','sky.jpg', 'white',  2, 0,0.4,0);
 - [[Modifying ambient light colours]]
 - [[Static]] 
 - [[Default load with animation]]
+- [[Move Cam Path]]
+
+Examples Readme
+## Static Scene
+
+A static scene with no animation
+
+## Set position and load a static model
+Pass in the GLB filename. Set the ambient light and then position x, y and z. 
+Do not add a rotation speed to make it static.
+
+ window.loadThreeJSWithModel('./models/tower.glb', 'sky.jpg', 'white', 0.8, 0,0 -250);
+ 
+  ### Passable Settings:
+ modelPath,backgroundTex, light, scale, posx, posy, posz, speed, custumAnim
+
+### Rotating Example
+
+This scene loads in a glb model and rotates it around  by setting the final argument 
+speed sent to the loadThreesWithModel Function
+
+
+### Set position and load a rotating model
+Pass in the GLB filename. Set the ambient light and then position x, y and z. 
+Add rotation speed to make it move at the set speed.
+
+ window.loadThreeJSWithModel('./models/robot.glb', 'sky.jpg', 'white', 0.2, 0,0,-125, 0.02);
+ 
+### Passable Settings:
+ modelPath,backgroundTex, light, scale, posx, posy, posz, speed, custumAnim
+
+## Trigger an Animation
+
+Passing model info with animation triggering automatically and some custom pos
+and scaling
+
+
+### How to load the model 
+Pass in the GLB filename. Set the background image,  ambient light and then position x, y and z. 
+Optionally add a rotation speed to add a rotation at the end.
+
+The final arguement at the end is to set the number animation you want to load (default is 0). If there are multiple animation on the model you can set which one you want to load with this arguement
+
+## Move Camera on a Path
+
+Move the scene camera to a certain position and repeat 
+
+### Set position and load a static model
+Pass in the GLB filename. Set the background texture, set the end point vectors for cam, set duration of movement and the loop status. 
+
+window.modelWithPath('./models/city.glb', 'sky.jpg', 0, 60, 120, 10000);
+ 
+  ### Passable Settings:
+ modelPath,backgroundTex, camPath, duration, loop
+
+ ## modified colours
+
+This is a scene with modified colours for lighting passed in as second arguement to the loadThreeJSWithModel Function
+
+## How to set the ambient light color
+This is how this is set. Color is set as the 2nd arguement and sets the ambient lighting on the model. 
+
+ window.loadThreeJSWithModel('./models/hero.glb', 'sky.jpg', 'red', 2, 0,0.5,0);
+
+ ### Passable Settings:
+ modelPath,backgroundTex, light, scale, posx, posy, posz, speed, custumAnim

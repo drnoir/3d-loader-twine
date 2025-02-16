@@ -6,6 +6,8 @@
 
 Live Demo Link - <a href = "https://drnoir.github.io/3d-loader-twine/Example%20Game%20-%20The%20Pointless%20Garage%20Quest/">Play the demo game here</a>
 
+Chapbook Demo Link - <a href = "https://drnoir.github.io/3d-loader-twine/chapbookExample/">Play the chapbook demo game here</a>
+
 This is a template for twine that can be used as a starting point for loading a GLB model into Twine with a script embedded on any passage that you wish to load in a GLB model. 
 
 This works for <a href = "https://videlais.github.io/snowman/#/">Snowman format</a> version 2.02 and <a href ="https://klembot.github.io/chapbook/">Chapbook</a> Not tested for other formats. Setup for both is different but examples are provided.

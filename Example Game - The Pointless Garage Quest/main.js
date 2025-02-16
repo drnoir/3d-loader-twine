@@ -173,7 +173,7 @@ window.loadThreeJSWithModel = async function (modelPath, backgroundTex, light, s
     animate();
 };
 
-window.modelWithPath = function (modelPath, backgroundTex, Tarx,Tary,Tarz, duration) {
+window.modelWithPath = function (modelPath, backgroundTex, scale, Tarx,Tary,Tarz, duration) {
     let model = modelPath;
      // Remove any existing WebGL content to prevent duplication
      let existingCanvas = document.querySelector("#three-container canvas");
@@ -222,9 +222,12 @@ loaderMove.load(
         (gltf) => {
         scene.add(gltf.scene);
         gltf.scene.position.set(0, 0, 0);
-        gltf.scene.scale.set(1, 1, 1); 
-        gltf.scene.scale.set(1, 1, 1);
-            
+        if (scale) {
+            gltf.scene.scale.set(scale, scale, scale);
+        }
+        else {
+            gltf.scene.scale.set(1, 1, 1);
+        }
             console.log("Model loaded:", model, gltf.animations);
         },
         undefined,

@@ -8,7 +8,18 @@ Live Demo Link - <a href = "https://drnoir.github.io/3d-loader-twine/Example%20G
 
 This is a template for twine that can be used as a starting point for loading a GLB model into Twine with a script embedded on any passage that you wish to load in a GLB model. 
 
-This works for <a href = "https://videlais.github.io/snowman/#/">Snowman format</a> version 2.02. Not tested for other formats.
+This works for <a href = "https://videlais.github.io/snowman/#/">Snowman format</a> version 2.02 and <a href ="https://klembot.github.io/chapbook/">Chapbook</a> Not tested for other formats. Setup for both is different but examples are provided.
+
+For Chapbook please copy the javascript in the example project into your javascript section rather than loading the external main.js file.
+Functions are then called like this:
+
+```
+[JavaScript]
+  setTimeout(() => {
+loadThreeJSWithModel('./models/mars.glb', 'space.jpg', 'white',0.5, -5,0,-90, 0.001);
+  }, 1000); 
+[continued]
+```
 
 You can use this as a template for your own projects.
 

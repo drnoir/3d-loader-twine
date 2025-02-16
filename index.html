@@ -71,7 +71,16 @@ document.head.appendChild(script);</script><tw-passagedata pid="1" name="Start" 
 ####  by Chris Godber
 This is a template for twine that can be used as a starting point for loading a GLB model into Twine with a script embedded on any passage that you wish to load in a GLB model. 
 
-This works for &lt;a href = &quot;https://videlais.github.io/snowman/#/&quot;&gt;Snowman format&lt;/a&gt; version 2.02. Not tested for other formats.
+This works for &lt;a href = &quot;https://videlais.github.io/snowman/#/&quot;&gt;Snowman format&lt;/a&gt; version 2.02 and &lt;a href =&quot;https://klembot.github.io/chapbook/&quot;&gt;Chapbook&lt;/a&gt; Not tested for other formats. Setup for both is different but examples are provided.
+
+For Chapbook please copy the javascript in the example project into your javascript section rather than loading the external main.js file.
+Functions are then called like this:
+
+[JavaScript]
+  setTimeout(() =&gt; {
+loadThreeJSWithModel(&#39;./models/mars.glb&#39;, &#39;space.jpg&#39;, &#39;white&#39;,0.5, -5,0,-90, 0.001);
+  }, 1000); 
+[continued]
 
 You can use this as a template for your own projects.
 

@@ -108,6 +108,7 @@ To read further detail please look at
 - [[Static]] 
 - [[Default load with animation]]
 - [[Move Cam Path]]
+- [[Add Char Sprites]]
 
 &lt;script&gt;
   window.onload = async function () {
@@ -147,7 +148,7 @@ Add rotation speed to make it move at the set speed.
 
  window.loadThreeJSWithModel(&#39;./models/robot.glb&#39;, &#39;sky.jpg&#39;, &#39;white&#39;, 0.2, 0,0,-125, 0.02);
     
-&lt;/script&gt;</tw-passagedata><tw-passagedata pid="3" name="Modifying ambient light colours" tags="" position="1125,200" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
+&lt;/script&gt;</tw-passagedata><tw-passagedata pid="3" name="Modifying ambient light colours" tags="" position="1125,275" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
 ## modified colours
 
@@ -229,7 +230,7 @@ This would typically look like this in the script section
 
  - window.loadThreeJSWithModel(&#39;hero.glb&#39;,&#39;sky.jpg&#39;, &#39;white&#39;,  2, 0,0.4,0);
  
- [[Start]]</tw-passagedata><tw-passagedata pid="7" name="Move Cam Path" tags="" position="1250,50" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
+ [[Start]]</tw-passagedata><tw-passagedata pid="7" name="Move Cam Path" tags="" position="1225,150" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
 
 ## Move Camera on a Path
 
@@ -249,6 +250,25 @@ window.modelWithPath(&#39;./models/city.glb&#39;, &#39;sky.jpg&#39;, 3, 0, 5,0, 
 
 window.modelWithPath(&#39;./models/city.glb&#39;, &#39;sky.jpg&#39;, 3, 0, 5,0, 25000);
 
+&lt;/script&gt;</tw-passagedata><tw-passagedata pid="8" name="Add Char Sprites" tags="" position="1425,25" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;
+
+## Add Charecter Sprites (Left / Right)
+
+Add a 3D model background with a left and right sprite 
+
+### Add Charecter Sprites (Left / Right)
+
+window.loadThreeJSWith2Actors(&#39;./models/cabin.glb&#39;, &#39;space.jpg&#39;,&#39;white&#39;, 2, &#39;right.png&#39;,&#39;left.png&#39;);
+ 
+  ### Passable Settings:
+ modelPath, backgroundTex, light, scale, pathToRightSprite, pathToLeftSprite, 
+
+[[Start]]
+
+&lt;script&gt;
+
+window.loadThreeJSWith2Actors(&#39;./models/cabin.glb&#39;, &#39;space.jpg&#39;,&#39;white&#39;, 2, &#39;right.png&#39;,&#39;left.png&#39;);
+ 
 &lt;/script&gt;</tw-passagedata></tw-storydata>
 		<script>
 		(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){

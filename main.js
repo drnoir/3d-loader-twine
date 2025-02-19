@@ -173,61 +173,61 @@ window.loadThreeJSWithModel = async function (modelPath, backgroundTex, light, s
     animate();
 };
 
-window.modelWithPath = function (modelPath, backgroundTex, scale, Tarx,Tary,Tarz, duration) {
+window.modelWithPath = function (modelPath, backgroundTex, scale, Tarx, Tary, Tarz, duration) {
     let model = modelPath;
-     // Remove any existing WebGL content to prevent duplication
-     let existingCanvas = document.querySelector("#three-container canvas");
-     if (existingCanvas) {
-         existingCanvas.remove();
-     }
- 
-     // Ensure cached modules exist
-     if (!window.loadThree || !cachedModules) {
-         console.error("Three.js modules not loaded.");
-         return;
-     }
+    // Remove any existing WebGL content to prevent duplication
+    let existingCanvas = document.querySelector("#three-container canvas");
+    if (existingCanvas) {
+        existingCanvas.remove();
+    }
+
+    // Ensure cached modules exist
+    if (!window.loadThree || !cachedModules) {
+        console.error("Three.js modules not loaded.");
+        return;
+    }
 
     const THREE = cachedModules.THREE;
     const GLTFLoader = cachedModules.GLTFLoader;
     // Initialize Three.js scene
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-const loaderMove = new GLTFLoader();
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const loaderMove = new GLTFLoader();
 
-renderer.setSize(window.innerWidth, window.innerHeight);
- document.getElementById("three-container").appendChild(renderer.domElement);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("three-container").appendChild(renderer.domElement);
 
-// Camera's initial position
-const startPosition = new THREE.Vector3(0, 2, 5);
-camera.position.copy(startPosition);
+    // Camera's initial position
+    const startPosition = new THREE.Vector3(0, 2, 5);
+    camera.position.copy(startPosition);
 
-// Target position for camera movement
-const targetPos = new THREE.Vector3(Tarx,Tary,Tarz);
-console.log(targetPos);
-// Lighting setup
-const light = new THREE.AmbientLight(0xffffff, 1);
-scene.add(light);
+    // Target position for camera movement
+    const targetPos = new THREE.Vector3(Tarx, Tary, Tarz);
+    console.log(targetPos);
+    // Lighting setup
+    const light = new THREE.AmbientLight(0xffffff, 1);
+    scene.add(light);
 
-const texLoader = new THREE.TextureLoader();
-// Load background image
-if (backgroundTex) {
-    texLoader.load(backgroundTex, function (texture) {
-        scene.background = texture;  // Set as background
-    });
-}
+    const texLoader = new THREE.TextureLoader();
+    // Load background image
+    if (backgroundTex) {
+        texLoader.load(backgroundTex, function (texture) {
+            scene.background = texture;  // Set as background
+        });
+    }
 
-loaderMove.load(
+    loaderMove.load(
         model,
         (gltf) => {
-        scene.add(gltf.scene);
-        gltf.scene.position.set(0, 0, 0);
-        if (scale) {
-            gltf.scene.scale.set(scale, scale, scale);
-        }
-        else {
-            gltf.scene.scale.set(1, 1, 1);
-        }
+            scene.add(gltf.scene);
+            gltf.scene.position.set(0, -3, 0);
+            if (scale) {
+                gltf.scene.scale.set(scale, scale, scale);
+            }
+            else {
+                gltf.scene.scale.set(1, 1, 1);
+            }
             console.log("Model loaded:", model, gltf.animations);
         },
         undefined,
@@ -236,34 +236,214 @@ loaderMove.load(
         }
     );
 
-// Animation parameters
-let startTime = null;
-let animationActive = true;
+    // Animation parameters
+    let startTime = null;
+    let animationActive = true;
 
-// Function to animate the camera
-function animateCamera(time) {
-    if (!startTime) startTime = time;
+    // Function to animate the camera
+    function animateCamera(time) {
+        if (!startTime) startTime = time;
 
-    // Calculate elapsed time as a fraction of the duration
-    const elapsed = (time - startTime) / duration;
-    if (elapsed < 1 && animationActive) {
-        // Move the camera smoothly from startPosition to targetPosition
-        camera.position.lerpVectors(startPosition, targetPos, elapsed);
-        requestAnimationFrame(animateCamera);
-    } else {
-        // Reset camera position after the animation finishes
-        camera.position.copy(targetPos);
-        animationActive = false;
+        // Calculate elapsed time as a fraction of the duration
+        const elapsed = (time - startTime) / duration;
+        if (elapsed < 1 && animationActive) {
+            // Move the camera smoothly from startPosition to targetPosition
+            camera.position.lerpVectors(startPosition, targetPos, elapsed);
+            requestAnimationFrame(animateCamera);
+        } else {
+            // Reset camera position after the animation finishes
+            camera.position.copy(targetPos);
+            animationActive = false;
 
-        // After a short delay, reset the camera back to the starting position
-        setTimeout(() => {
-            camera.position.copy(startPosition);
-            startTime = null; // Reset the timer for a new movement
-            animationActive = true; // Allow for future animations
-        }, 1000); // Reset after 1 second at target position
+            // After a short delay, reset the camera back to the starting position
+            setTimeout(() => {
+                camera.position.copy(startPosition);
+                startTime = null; // Reset the timer for a new movement
+                animationActive = true; // Allow for future animations
+            }, 1000); // Reset after 1 second at target position
+        }
+        renderer.render(scene, camera); // Render the scene
     }
-    renderer.render(scene, camera); // Render the scene
+    // Start the camera animation loop
+    requestAnimationFrame(animateCamera);
 }
-// Start the camera animation loop
-requestAnimationFrame(animateCamera);
+
+// LOAD WITH 2 SPRITES  Right - Left - Still WIP
+window.loadThreeJSWith2Actors = function (modelPath, backgroundTex, light, scale, charR, charL) {
+    // load sprites
+    let model = modelPath;
+    let spriteRight = null; let spriteLeft = null;
+
+    // Remove any existing WebGL content to prevent duplication
+    let existingCanvas = document.querySelector("#three-container canvas");
+    if (existingCanvas) {
+        existingCanvas.remove();
+    }
+
+    // Ensure cached modules exist
+    if (!window.loadThree || !cachedModules) {
+        console.error("Three.js modules not loaded.");
+        return;
+    }
+
+    const THREE = cachedModules.THREE;
+    const GLTFLoader = cachedModules.GLTFLoader;
+
+    // Initialize Three.js scene
+    const scene = new THREE.Scene();
+
+    const texLoader = new THREE.TextureLoader();
+    // Load background image
+    if (backgroundTex) {
+        texLoader.load(backgroundTex, function (texture) {
+            scene.background = texture;  // Set as background
+        });
+    }
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(light, 1);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(5, 5, 5);
+    scene.add(directionalLight);
+    scene.background = new THREE.Color('black');
+
+    // Camera and renderer setup
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 2, 5);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.getElementById("three-container").appendChild(renderer.domElement);
+
+
+    // Add sprites in order - Right, Center, Left
+    if (charR !== null) {
+        spriteRight = createSprite(charR);
+        positionSpriteRight(spriteRight, camera, renderer);
+        scene.add(spriteRight);
+    }
+    if (charL !== null) {
+        spriteLeft = createSprite(charL);
+        positionSpriteLeft(spriteLeft, camera, renderer);
+        scene.add(spriteLeft);
+    }
+
+    camera.position.z = 8; // Move the camera back
+    // Load the GLB model
+    const clock = new THREE.Clock();
+    let mixer = null; // Mixer for animations
+    let animNum = null; // if custom anim 
+
+    const loader = new GLTFLoader();
+    loader.load(
+        model,
+        (gltf) => {
+            scene.add(gltf.scene);
+            gltf.scene.position.set(0, -4, 5);
+            // custom scaling ?
+            if (scale) {
+                gltf.scene.scale.set(scale, scale, scale);
+            }
+            else {
+                gltf.scene.scale.set(1, 1, 1);
+            }
+
+            console.log("Model loaded:", model, gltf.animations);
+            // Ensure animations exist
+            if (gltf.animations.length > 0) {
+                mixer = new THREE.AnimationMixer(gltf.scene);
+                if (custumAnim >= 0 && custumAnim != null) {
+                    console.log(gltf.animations[custumAnim].name);
+                    animNum = gltf.animations[custumAnim];
+                    const actionCustom = mixer.clipAction(animNum);
+                    actionCustom.play()
+                } else
+                    gltf.animations.forEach((clip) => {
+                        console.log("Playing animation:", clip.name);
+                        const action = mixer.clipAction(clip);
+                        action.play();
+                    });
+            } else {
+                console.warn("No animations found in model:", model);
+            }
+        },
+        undefined,
+        (error) => {
+            console.error("Error loading model:", error);
+        }
+    );
+
+    // Handle resizing
+    window.addEventListener("resize", () => {
+        positionSpriteRight(spriteRight, camera, renderer);
+        positionSpriteLeft(spriteLeft, camera, renderer);
+    });
+
+    // Animation loop
+    function animate() {
+        requestAnimationFrame(animate);
+        if (mixer) mixer.update(clock.getDelta()); // Update mixer if it exists
+        renderer.render(scene, camera);
+    }
+
+    function positionSpriteRight(sprite, camera, renderer) {
+        const width = renderer.domElement.clientWidth;
+        const height = renderer.domElement.clientHeight;
+
+        // Convert screen space (right edge) to world coordinates
+        const rightEdge = screenToWorld(16, 0, camera, width, height);
+        sprite.scale.set(6, 9);
+        sprite.position.set(rightEdge.x, rightEdge.y, 0);
+    }
+
+    function positionSpriteLeft(sprite, camera, renderer) {
+        const width = renderer.domElement.clientWidth;
+        const height = renderer.domElement.clientHeight;
+
+        // Convert screen space (left edge) to world coordinates
+        const leftEdge = screenToWorld(-16, 0, camera, width, height);
+        sprite.scale.set(6, 9);
+        sprite.position.set(leftEdge.x, leftEdge.y, 0);
+    }
+
+    // Convert normalized screen coordinates to world space
+    function screenToWorld(x, y, camera, width, height) {
+        const ndc = new THREE.Vector3(x * 2 - 1, -(y * 2 - 1), 0);
+        ndc.unproject(camera);
+        ndc.z = 0; // Ensure sprite stays in 2D plane
+        return ndc;
+    }
+
+    // Create a sprite
+    function createSprite(textureURL, flipX = false) {
+        const loaderS = new THREE.TextureLoader();
+
+        const texture = loaderS.load(
+            textureURL,
+            () => console.log(` Texture loaded: ${textureURL}`),
+            undefined,
+            (err) => console.error(` Error loading texture: ${textureURL}`, err)
+        );
+
+        if (!texture) {
+            console.error(" Texture failed to load!");
+            return null;
+        }
+        const material = new THREE.SpriteMaterial({
+            map: texture,
+            depthTest: false,  // Disable depth testing to make sure the sprite is always in front
+            depthWrite: false  // Disable writing to depth buffer so it's not overwritten by 3D objects
+        });
+
+        const sprite = new THREE.Sprite(material);
+
+        // Flip horizontally if required
+        if (flipX) {
+            sprite.scale.x *= -1;
+        }
+
+        return sprite;
+    }
+    animate();
 }
+

@@ -64,7 +64,20 @@ tw-story {
   margin:1em;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">var script = document.createElement('script');
 script.src = './main.js'; // Try using an absolute path if needed
-document.head.appendChild(script);</script><tw-passagedata pid="1" name="Start" tags="" position="650,50" size="100,100">## The Pointless Garage Quest
+document.head.appendChild(script);
+
+
+  window.onload = async function () {
+        try {
+            const modules = await window.loadThree();
+            console.log("Three.js is ready:", modules);
+              const models = await  window.preloadGLB('/.');
+                     console.log("models:", models);
+        } catch (error) {
+            console.error("Failed to load Three.js:", error);
+        }
+    };
+</script><tw-passagedata pid="1" name="Start" tags="" position="650,50" size="100,100">## The Pointless Garage Quest
 ### (Demo game for 3D Twine Loader)
 
 You see a distant garage on the horizon. You are desperate to email your Grandma who is worried about you. You appraoch the garage to see if you can find a computer as your phone is dead.
@@ -73,16 +86,6 @@ You see a distant garage on the horizon. You are desperate to email your Grandma
 
 Music by &lt;a href=&quot;https://pixabay.com/users/bertsz-1667539/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=188519&quot;&gt;Bertsz&lt;/a&gt; from &lt;a href=&quot;https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=188519&quot;&gt;Pixabay&lt;/a&gt;
 
-&lt;script&gt;
-  window.onload = async function () {
-        try {
-            const modules = await window.loadThree();
-            console.log(&quot;Three.js is ready:&quot;, modules);
-        } catch (error) {
-            console.error(&quot;Failed to load Three.js:&quot;, error);
-        }
-    };
-&lt;/script&gt;
 
 
 </tw-passagedata><tw-passagedata pid="2" name="Begin" tags="" position="400,200" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;

@@ -65,7 +65,19 @@ tw-story {
   margin:1em;
 }</style><script role="script" id="twine-user-script" type="text/twine-javascript">var script = document.createElement('script');
 script.src = './main.js'; // Try using an absolute path if needed
-document.head.appendChild(script);</script><tw-passagedata pid="1" name="Start" tags="" position="650,50" size="100,100">&lt;img src = &quot;logo.jpg&quot; class = &quot;floatRight smallImage&quot; /&gt;
+document.head.appendChild(script);
+
+  window.onload = async function () {
+        try {
+            const modules = await window.loadThree();
+            console.log("Three.js is ready:", modules);
+              const models = await  window.preloadGLB('/.');
+                     console.log("models:", models);
+        } catch (error) {
+            console.error("Failed to load Three.js:", error);
+        }
+    };
+</script><tw-passagedata pid="1" name="Start" tags="" position="650,50" size="100,100">&lt;img src = &quot;logo.jpg&quot; class = &quot;floatRight smallImage&quot; /&gt;
 
 ## 3D Loader Twine
 ####  by Chris Godber
@@ -109,20 +121,6 @@ To read further detail please look at
 - [[Default load with animation]]
 - [[Move Cam Path]]
 - [[Add Char Sprites]]
-
-&lt;script&gt;
-  window.onload = async function () {
-        try {
-            const modules = await window.loadThree();
-            console.log(&quot;Three.js is ready:&quot;, modules);
-              const models = await  window.preloadGLB(&#39;/.&#39;);
-                     console.log(&quot;models:&quot;, models);
-        } catch (error) {
-            console.error(&quot;Failed to load Three.js:&quot;, error);
-        }
-    };
-
-&lt;/script&gt;
 
 
 </tw-passagedata><tw-passagedata pid="2" name="Load In and Rotate" tags="" position="400,325" size="100,100">&lt;div id=&quot;three-container&quot;&gt;&lt;/div&gt;

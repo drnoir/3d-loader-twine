@@ -268,8 +268,9 @@ window.modelWithPath = function (modelPath, backgroundTex, scale, Tarx, Tary, Ta
     requestAnimationFrame(animateCamera);
 }
 
+
 // LOAD WITH 2 SPRITES  Right - Left - Still WIP
-window.loadThreeJSWith2Actors = function (modelPath, backgroundTex, light, scale, charR, charL) {
+window.loadThreeJSWith2Actors = function (modelPath, backgroundTex, light, scale, posx, posy, posz, charL, charR) {
     // load sprites
     let model = modelPath;
     let spriteRight = null; let spriteLeft = null;
@@ -314,8 +315,6 @@ window.loadThreeJSWith2Actors = function (modelPath, backgroundTex, light, scale
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.getElementById("three-container").appendChild(renderer.domElement);
-
-
     // Add sprites in order - Right, Center, Left
     if (charR !== null) {
         spriteRight = createSprite(charR);
@@ -339,7 +338,13 @@ window.loadThreeJSWith2Actors = function (modelPath, backgroundTex, light, scale
         model,
         (gltf) => {
             scene.add(gltf.scene);
-            gltf.scene.position.set(0, -4, 5);
+            // / custom pos ?
+            if (posx, posy, posz) {
+                gltf.scene.position.set(posx, posy, posz);
+            } else {
+                gltf.scene.position.set(0, 0, 0);
+            }
+
             // custom scaling ?
             if (scale) {
                 gltf.scene.scale.set(scale, scale, scale);
